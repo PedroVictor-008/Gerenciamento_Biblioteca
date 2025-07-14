@@ -1,0 +1,67 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Locações de Livros</h2>
+
+  {% if messages %}
+    <div class="mb-3">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <table class="table table-bordered table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Livro</th>
+        <th>Aluno</th>
+        <th>Funcionário</th>
+        <th>Data da Locação</th>
+        <th>Data Devolução</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for locacao in locacoes %}
+      <tr>
+        <td>{{ locacao.acervo.titulo }}</td>
+        <td>{{ locacao.aluno }}</td>
+        <td>{{ locacao.funcionario }}</td>
+        <td>{{ locacao.data_hora_locacao|date:"d/m/Y" }}</td>
+        
+        <td>
+          {% if locacao.data_devolucao %}
+            {{ locacao.data_devolucao|date:"d/m/Y" }}
+          {% else %}
+            -
+          {% endif %}
+        </td>
+
+        <td>
+          {% if locacao.status %}
+            {% if locacao.status == 'emprestado' %}
+              <span class="badge bg-danger"><strong>Emprestado</strong></span>
+            {% else %}
+            <span class="badge bg-success"><strong>Disponível</strong></span>
+            {% endif %}
+          {% else %}
+          
+        {% endif %}
+
+          
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" class="text-center">Nenhuma locação encontrada.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
